@@ -9,8 +9,8 @@ fetch('http://localhost:3000/api/products')
         
         for (let product of products) {
             console.log(product.name);
-
-
+            
+            let newAnchor = document.createElement('a');
             let newArticle = document.createElement('article');
             let newColors = document.createElement('p');
             let newName = document.createElement('h3');
@@ -29,6 +29,9 @@ fetch('http://localhost:3000/api/products')
             newDescription.textContent = product.description;
             newAltTxt.textContent = product.altTxt;
 
+            newAnchor.setAttribute('href','./product.html?id=' + product._id) ;
+
+            newAnchor.appendChild(newArticle);
             newArticle.appendChild(newColors);
             newArticle.appendChild(newName);
             newArticle.appendChild(newId);
@@ -36,13 +39,16 @@ fetch('http://localhost:3000/api/products')
             newArticle.appendChild(newImg);
             newArticle.appendChild(newDescription);
             newImg.appendChild(newAltTxt);
+       
 
             newName.classList.add('productName');
             newDescription.classList.add('productDescription');
 
             const sectionProduct = document.querySelector('section');
-            
-            sectionProduct.appendChild(newArticle);
+
+            sectionProduct.appendChild(newAnchor);
+
+        
 
             
         }
@@ -50,3 +56,4 @@ fetch('http://localhost:3000/api/products')
     
 
     }
+
