@@ -8,7 +8,7 @@ fetch('http://localhost:3000/api/products')
         let item = document.getElementById('items');
         
         for (let product of products) {
-            console.log(product.name);
+            console.log(product._id);
             
             let newAnchor = document.createElement('a');
             let newArticle = document.createElement('article');
