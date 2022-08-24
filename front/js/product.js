@@ -1,64 +1,100 @@
 console.log(window.location.href);
 
 const url = window.location.href;
-const productId = url.split('=').pop();
+const productId = url.split("=").pop();
 
 console.log(productId);
 
-fetch('http://localhost:3000/api/products')
-    .then(data => {
-        return data.json();
-        }).then(json => findProduct(json));
+fetch("http://localhost:3000/api/products")
+  .then((data) => {
+    return data.json();
+  })
+  .then((json) => findProduct(json));
 
-
-function findProduct (products){
-
-
-for (i = 0; i < products.length; i++) {
+function findProduct(products) {
+  for (i = 0; i < products.length; i++) {
     if (products[i]._id === productId) {
+      const title = document.getElementById("title");
+      const price = document.getElementById("price");
+      const description = document.getElementById("description");
 
-       
-        const title = document.getElementById('title');
-        const price = document.getElementById('price');
-        const description = document.getElementById('description');
-      
-        title.textContent = products[i].name;
-        price.textContent = products[i].price;
-        description.textContent = products[i].description;
-  
-        const imgCont = document.getElementsByClassName('item__img');
-        const itemImg = document.createElement('img');
+      title.textContent = products[i].name;
+      price.textContent = products[i].price;
+      description.textContent = products[i].description;
 
-        itemImg.src = products[i].imageUrl;
+      const imgCont = document.getElementsByClassName("item__img");
+      const itemImg = document.createElement("img");
 
-        imgCont[0].appendChild(itemImg);
+      itemImg.src = products[i].imageUrl;
 
-        const colors = products[i].colors;
+      imgCont[0].appendChild(itemImg);
 
+      const colors = products[i].colors;
 
-       for (j = 0; j < colors.length; j++) {
-
-
-            const color = colors[j]
+      for (j = 0; j < colors.length; j++) {
+        const color = colors[j];
 
         console.log(color);
 
-            const options = document.getElementById('colors');
+        const options = document.getElementById("colors");
 
-            const colorOp = document.createElement('option');
+        const colorOp = document.createElement("option");
 
-            colorOp.textContent = color;
+        colorOp.textContent = color;
 
-            colorOp.setAttribute('value', color);
+        colorOp.setAttribute("value", color);
 
-            options.appendChild(colorOp);
-       
-
-
-       }
-   
-
+        options.appendChild(colorOp);
+      }
+    }
+  }
 }
 
+const cart = document.getElementById("addToCart");
+
+function addCart() {
+  console.log("in the cart");
+  checkStorage();
+
+  const url = window.location.href;
+  const productId = url.split("=").pop();
+
+  const colorSelect = document.getElementById("colors");
+  const colorValue = colorSelect.options[colorSelect.selectedIndex].value;
+
+  console.log(colorValue);
+  const cartStorage = JSON.parse(localStorage.getItem("cart"));
+  const quantityNum = document.getElementById("quantity");
+  const number = quantityNum.value;
+
+  const index = cartStorage.findIndex((element) => {
+    if (element.id === productId && element.color === colorValue) {
+      return true;
+    }
+  });
+
+  if (index === -1) {
+    const newItem = {
+      color: colorValue,
+      quantity: number,
+      id: productId,
+    };
+
+    cartStorage.push(newItem);
+    localStorage.setItem("cart", JSON.stringify(cartStorage));
+  }
+  else {
+    const element = cartStorage[index];
+    element.quantity = number + element.quantity;
+  }
 }
+
+cart.addEventListener("click", addCart);
+
+function checkStorage() {
+  localStorage.getItem("cart");
+
+  if (localStorage.getItem("cart") === null) {
+    localStorage.setItem("cart", "[]");
+  }
 }
