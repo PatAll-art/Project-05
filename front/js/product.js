@@ -66,6 +66,12 @@ function addCart() {
   const cartStorage = JSON.parse(localStorage.getItem("cart"));
   const quantityNum = document.getElementById("quantity");
   const number = quantityNum.value;
+  const imgDiv = document.getElementsByClassName("item__img")[0];
+  const itemImg = imgDiv.getElementsByTagName("img")[0].src;
+  const price = document.getElementById("price").textContent;
+  const description = document.getElementById("description").textContent;
+  const title = document.getElementById("title").textContent;
+
 
   const index = cartStorage.findIndex((element) => {
     if (element.id === productId && element.color === colorValue) {
@@ -78,6 +84,10 @@ function addCart() {
       color: colorValue,
       quantity: number,
       id: productId,
+      img: itemImg,
+      price: price,
+      description: description,
+      name: title
     };
 
     cartStorage.push(newItem);
@@ -85,7 +95,8 @@ function addCart() {
   }
   else {
     const element = cartStorage[index];
-    element.quantity = number + element.quantity;
+    element.quantity = Number(number) + Number(element.quantity);
+    localStorage.setItem("cart", JSON.stringify(cartStorage));
   }
 }
 
