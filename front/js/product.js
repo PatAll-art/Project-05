@@ -50,6 +50,9 @@ function findProduct(products) {
   }
 }
 
+// addint to cart code:
+// create variable that contains the add to cart button
+
 const cart = document.getElementById("addToCart");
 
 function addCart() {
@@ -72,7 +75,7 @@ function addCart() {
   const description = document.getElementById("description").textContent;
   const title = document.getElementById("title").textContent;
 
-
+// Array of the product 
   const index = cartStorage.findIndex((element) => {
     if (element.id === productId && element.color === colorValue) {
       return true;
@@ -87,7 +90,8 @@ function addCart() {
       img: itemImg,
       price: price,
       description: description,
-      name: title
+      name: title,
+   
     };
 
     cartStorage.push(newItem);
