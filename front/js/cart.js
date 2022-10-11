@@ -1,6 +1,8 @@
 const storedItem = localStorage.getItem("cart");
 const itemStored = JSON.parse(storedItem);
 
+// use from below function everytime the page loads
+
 totalCheck();
 
 
@@ -109,6 +111,8 @@ totalCheck();
 
 });
 }
+
+// quantity and price total function
 
 function totalCheck() {
 
@@ -238,7 +242,7 @@ email.addEventListener('input', ($event) => {
   }
 });
 
-// need validation on each field
+// order confirmation after input of contact
 
 let orderConfirm = document.getElementById('order');
 
@@ -263,6 +267,7 @@ orderConfirm.addEventListener('click',(event) =>{
     productShopped.push(itemStored[i].id)
   }
   console.log(productShopped);
+// POST method of product
 
   fetch("http://localhost:3000/api/products/order",{
     method: 'POST',
@@ -275,6 +280,8 @@ orderConfirm.addEventListener('click',(event) =>{
     .then(res => {localStorage.setItem('orderId', res.orderId)
     console.log(res);
 
+    // pull of order ID for confirmation page
+    
     window.location.href = 'confirmation.html?id=' + res.orderId;
 
   // order ID response, save into local storage

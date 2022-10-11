@@ -1,9 +1,12 @@
 console.log(window.location.href);
 
+// get ID of product
 const url = window.location.href;
 const productId = url.split("=").pop();
 
 console.log(productId);
+
+// fetch product from API
 
 fetch("http://localhost:3000/api/products")
   .then((data) => {
@@ -11,6 +14,7 @@ fetch("http://localhost:3000/api/products")
   })
   .then((json) => findProduct(json));
 
+// function to find product by pulling the ID name
 function findProduct(products) {
   for (i = 0; i < products.length; i++) {
     if (products[i]._id === productId) {
@@ -50,7 +54,7 @@ function findProduct(products) {
   }
 }
 
-// addint to cart code:
+// adding to cart code:
 // create variable that contains the add to cart button
 
 const cart = document.getElementById("addToCart");
@@ -105,7 +109,7 @@ function addCart() {
 }
 
 cart.addEventListener("click", addCart);
-
+// check local storage function after adding to cart
 function checkStorage() {
   localStorage.getItem("cart");
 

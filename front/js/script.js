@@ -1,7 +1,10 @@
+// fetch product data from API
 fetch('http://localhost:3000/api/products')
     .then(data => {
         return data.json();
         }).then(json => AddProducts(json));
+
+// Pull product information from the fetched library
 
     function AddProducts (products) {
 
