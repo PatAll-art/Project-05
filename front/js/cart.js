@@ -131,7 +131,14 @@ for (let i = 0; i < itemStored.length; i++) {
 let totalPrice = document.getElementById('totalPrice');
   
 totalPrice.textContent = totalSum;
+
+let totalQuantity = document.getElementById('totalQuantity');
+
+totalQuantity.textContent = totalCart;
+
 }
+
+
 
 
 /* function name (firstName) {
@@ -155,19 +162,70 @@ if (firstNameFormat.test(firstName)) {
 } else {
   alert('Valid');
 };*/
-let submitFirstName = document.getElementById('firstName');
+
+/*let submitFirstName = document.getElementById('firstName');
 function firstNameInput(inputName) {
   let name = /^[A-Za-z]+$/;
-  if(inputName.value.match(name)) {
+  if(submitFirstName.value.match(name)) {
     alert('Thank you!');
     return true;
   } else {
-    alert('Try again!');
-    return false;
+    error.textContent = ""
+  }*/
+
+  /*let firstName = new RegExp('^[A-Za-z]+$');
+  console.log(firstName.test('alias')); // true*/
+
+  let textChecker = /[a-z]/gi;
+
+  let firstName = document.getElementById('firstName');
+ firstName.addEventListener('blur', ($event) => {
+  console.log(firstName.value);
+  if (!firstName.value.match(textChecker)) {
+    firstName.setCustomValidity('Please input First Name');
+    firstName.reportValidity();
+  } else {
+    firstName.setCustomValidity('');
   }
-}
+});
 
 
+
+// last name code
+let lastName = document.getElementById('lastName');
+lastName.addEventListener('blur', ($event) => {
+ console.log(lastName.value);
+ if (!lastName.value.match(textChecker)) {
+   lastName.setCustomValidity('Please input Last Name');
+   lastName.reportValidity();
+ } else {
+   lastName.setCustomValidity('');
+ }
+});
+
+// address code
+let address = document.getElementById('address');
+address.addEventListener('blur', ($event) => {
+ console.log(address.value);
+ if (!address.value.match(textChecker)) {
+   address.setCustomValidity('Please input Address');
+   address.reportValidity();
+ } else {
+   address.setCustomValidity('');
+ }
+});
+
+// city code
+let city = document.getElementById('city');
+city.addEventListener('blur', ($event) => {
+  console.log(city.value);
+  if (!city.value.match(textChecker)) {
+    city.setCustomValidity('Please input City');
+    city.reportValidity();
+  } else {
+    city.setCustomValidity('');
+  }
+ });
 
 // email code
 let email = document.getElementById('email');
@@ -180,7 +238,51 @@ email.addEventListener('input', ($event) => {
   }
 });
 
+// need validation on each field
 
+let orderConfirm = document.getElementById('order');
 
+orderConfirm.addEventListener('click',(event) =>{
+  console.log('order is comanded');
+  event.preventDefault();
 
+  let contact = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    address: address.value,
+    city: city.value,
+    email: email.value
+  }
 
+  console.log(contact);
+
+  let productShopped = []
+
+  for (i = 0; i < itemStored.length; i++) {
+    console.log(itemStored[i]);
+    productShopped.push(itemStored[i].id)
+  }
+  console.log(productShopped);
+
+  fetch("http://localhost:3000/api/products/order",{
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({contact: contact, products: productShopped})
+  }).then(res => res.json())
+    .then(res => {localStorage.setItem('orderId', res.orderId)
+    console.log(res);
+
+    window.location.href = 'confirmation.html?id=' + res.orderId;
+
+  // order ID response, save into local storage
+  /*$('#done').click(function(){
+    console.log({orderId})
+    alert(`Thanks for ordering with us. Your order Id is ${orderId} . Use it to track your order.`);
+    localStorage.clear();
+  })*/
+ 
+})
+})
